@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Request an invite — CoSeeker</title>
+  <meta name="description" content="Request an invite to CoSeeker and help shape a calm, invite-only space for sincere seekers.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="CoSeeker home"><img src="assets/coseeker-earth.svg" alt=""><span class="wordmark">CoSeeker</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle><span class="sr-only">Open menu</span><span></span><span></span></button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary" data-menu>
+        <a href="manifesto.html">Manifesto</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+        <a class="header-cta" href="request-invite.html" aria-current="page">Request an invite</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section" style="padding-top: clamp(44px, 7vh, 80px);">
+      <div class="shell" style="display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 5vw, 72px); align-items: start;">
+
+        <div style="position: sticky; top: 96px;">
+          <img src="assets/coseeker-earth.svg" alt="" style="width: 76px; height: 76px; margin-bottom: 26px;">
+          <h1 style="font-size: clamp(38px, 6vw, 64px); margin-top: 8px;">Help shape<br>CoSeeker.</h1>
+          <p class="lead" style="margin-top: 20px; max-width: 40ch;">A few honest words, and where to reach you. Every request is read personally by the team.</p>
+          <p style="margin-top: 24px; font-size: 15px; color: #666;">Already have an invite?
+            <a href="https://coseeker.com/" style="color: #111; font-weight: 600; text-decoration: underline; text-underline-offset: 2px;">Enter CoSeeker →</a>
+          </p>
+        </div>
+
+        <div class="form-card" data-form-scope>
+          <form data-form data-endpoint="/api/invite" data-required="idea,name,email,location" novalidate>
+            <label class="field" style="margin-top:0;">
+              <span>What do you think of CoSeeker, and how would you like to help shape it?</span>
+              <textarea name="idea" rows="4" placeholder="Share your honest thoughts, an idea, or what drew you here…"></textarea>
+            </label>
+            <label class="field"><span>Full name</span><input name="name" type="text" autocomplete="name" placeholder="Your full name"></label>
+            <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+            <label class="field"><span>Location</span><input name="location" type="text" placeholder="City, Country"></label>
+            <label class="field"><span>Referred by <span class="opt">· optional</span></span><input name="referrer" type="text" placeholder="Name of the person who referred you"></label>
+            <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
+            <p class="form-error" data-form-error hidden></p>
+            <button class="btn btn--ink" type="submit" style="margin-top: 22px; width: 100%;">Request an invite →</button>
+            <p class="form-note" style="text-align: center;">No spam, no lists — just a note when a spot opens.</p>
+          </form>
+          <div class="form-confirm" data-form-confirm hidden>
+            <div class="check" aria-hidden="true">✓</div>
+            <h3>Thank you, <span data-confirm-name>friend</span>.</h3>
+            <p>Your request is in. We read every one personally and will be in touch as invitations open — look out for a note from the CoSeeker team.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-main">
+        <div class="footer-brand"><div class="fb-mark"><img src="assets/coseeker-earth.svg" alt=""><span class="wordmark">CoSeeker</span></div><p>Infrastructure for sincere seekers.</p></div>
+        <div class="footer-cols">
+          <div class="footer-col"><span class="h">Explore</span><a href="manifesto.html">Manifesto</a><a href="faq.html">FAQ</a></div>
+          <div class="footer-col"><span class="h">Trust</span><a href="guidelines.html">Guidelines</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+          <div class="footer-col"><span class="h">Connect</span><a href="contact.html">Contact</a><a href="help.html">Help</a><a href="https://github.com/k4m2a">GitHub ↗</a></div>
+        </div>
+      </div>
+      <div class="footer-base"><span>© 2026 K4M2A Foundation</span><span>Technology for awakening, not distraction.</span></div>
+    </div>
+  </footer>
+</body>
+</html>
