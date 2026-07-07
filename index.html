@@ -24,22 +24,45 @@
     @keyframes csPop { from { opacity: 0; transform: translateY(24px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
     @keyframes csOverlay { from { opacity: 0; } to { opacity: 1; } }
     @keyframes csTwinkle { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+
+    /* ---- Header: collapsible nav, matching the rest of the site ---- */
+    .cs-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px clamp(20px, 5vw, 64px); max-width: 1200px; width: 100%; margin: 0 auto; position: relative; z-index: 40; }
+    .cs-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+    .cs-nav { display: flex; align-items: center; gap: clamp(12px, 2.2vw, 30px); font-size: 14.5px; font-weight: 500; }
+    .cs-nav-link { color: #444; text-decoration: none; transition: color .15s; }
+    .cs-nav-link:hover { color: #111; }
+    .cs-nav-cta { text-decoration: none; padding: 10px 20px; border-radius: 999px; background: #111; color: #fff; font-weight: 600; font-size: 14.5px; white-space: nowrap; }
+    .cs-menu-btn { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 8px; }
+    .cs-menu-btn span { display: block; width: 22px; height: 2px; background: #111; border-radius: 2px; }
+    @media (max-width: 720px) {
+      .cs-menu-btn { display: flex; }
+      .cs-nav {
+        position: absolute; top: 100%; right: 0; left: 0;
+        flex-direction: column; align-items: stretch; gap: 0;
+        background: #fff; border-bottom: 1px solid #ededed;
+        padding: 8px 20px 20px; display: none;
+      }
+      .cs-nav.is-open { display: flex; }
+      .cs-nav-link { padding: 13px 0; border-bottom: 1px solid #f2f2f2; font-size: 16px; }
+      .cs-nav-cta { margin-top: 12px; text-align: center; }
+    }
   </style>
 </helmet>
 
 <div style="background: {{ bg }}; font-family: 'DM Sans', sans-serif; color: #111111;">
 
   <!-- ============ HEADER ============ -->
-  <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(20px, 5vw, 64px); max-width: 1200px; width: 100%; margin: 0 auto;">
-      <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
+  <div class="cs-header-inner">
+      <a class="cs-brand" href="index.html">
         <img src="assets/coseeker-earth.svg" alt="CoSeeker" style="width: 30px; height: 30px; display: block;">
         <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 21px; letter-spacing: -.03em; color: #111;">CoSeeker</span>
       </a>
-      <nav style="display: flex; align-items: center; gap: clamp(12px, 2.2vw, 30px); font-size: 14.5px; font-weight: 500;">
-        <a href="manifesto.html" style="color: #444; text-decoration: none;">Manifesto</a>
-        <a href="faq.html" style="color: #444; text-decoration: none;">FAQ</a>
-        <a href="contact.html" style="color: #444; text-decoration: none;">Contact</a>
-        <a href="request-invite.html" style="text-decoration: none; padding: 10px 20px; border-radius: 999px; background: #111; color: #fff; font-weight: 600; font-size: 14.5px;" style-hover="{{ darkHover }}">Request an invite</a>
+      <button class="cs-menu-btn" type="button" aria-label="Toggle menu" aria-controls="cs-nav" aria-expanded="{{ menuOpen }}" onclick="{{ toggleMenu }}"><span></span><span></span><span></span></button>
+      <nav class="cs-nav {{ navOpenClass }}" id="cs-nav" aria-label="Primary">
+        <a class="cs-nav-link" href="manifesto.html">Manifesto</a>
+        <a class="cs-nav-link" href="faq.html">FAQ</a>
+        <a class="cs-nav-link" href="contact.html">Contact</a>
+        <a class="cs-nav-cta" href="request-invite.html" style-hover="{{ darkHover }}">Request an invite</a>
       </nav>
     </div>
 
@@ -163,13 +186,14 @@
 </div></x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900},&quot;bgTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;offwhite&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;white&quot;,&quot;offwhite&quot;]},&quot;autoOpenAssessment&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { open: false, done: false, idea: '', name: '', email: '', location: '', referrer: '', error: '' };
+  state = { open: false, done: false, menuOpen: false, idea: '', name: '', email: '', location: '', referrer: '', error: '' };
 
   componentDidMount() {
     if (this.props.autoOpenAssessment) this._t = setTimeout(() => this.setState({ open: true }), 1000);
   }
   componentWillUnmount() { clearTimeout(this._t); }
 
+  toggleMenu = () => this.setState({ menuOpen: !this.state.menuOpen });
   openFlow = () => this.setState({ open: true });
   closeFlow = () => this.setState({ open: false });
   validEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
@@ -187,6 +211,9 @@ class Component extends DCLogic {
 
     return {
       bg,
+      menuOpen: this.state.menuOpen,
+      navOpenClass: this.state.menuOpen ? 'is-open' : '',
+      toggleMenu: this.toggleMenu,
       open: this.state.open,
       openFlow: this.openFlow,
       closeFlow: this.closeFlow,
