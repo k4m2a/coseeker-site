@@ -53,13 +53,24 @@
           if (!res.ok || !json.ok) { throw new Error(json.error || 'Something went wrong. Please try again.'); }
         });
       }).then(function () {
-        var conf = form.closest('[data-form-scope]') || document;
+        var scope = form.closest('[data-form-scope]');
+        var conf = scope || document;
         var fc = conf.querySelector('[data-form-confirm]');
         var first = (data.name || '').split(/\s+/)[0];
         var nm = conf.querySelector('[data-confirm-name]');
         if (nm && first) nm.textContent = first;
         form.hidden = true;
         if (fc) fc.hidden = false;
+        // Collapse to a clean, centred completion screen: drop the intro/aside
+        // column and any sticky offset that would overlap the confirmation.
+        var grid = scope ? scope.closest('.contact-grid') : null;
+        if (grid) {
+          grid.classList.add('is-confirmed');
+          grid.querySelectorAll('[data-confirm-hide]').forEach(function (el) { el.hidden = true; });
+        }
+        if (scope && typeof scope.scrollIntoView === 'function') {
+          scope.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }).catch(function (err) {
         showErr(err.message || 'Something went wrong. Please try again.');
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = submitLabel; }
