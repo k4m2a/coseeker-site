@@ -1,0 +1,17 @@
+# Static file server for the CoSeeker marketing site.
+# Coolify builds this image and Traefik fronts it at www.coseeker.org; Caddy here
+# just serves files on :80 behind that proxy.
+:80 {
+	root * /srv
+	encode gzip
+
+	# Don't serve the build/config files that ride along in the image.
+	@meta path /Caddyfile /Dockerfile /.dockerignore
+	respond @meta 404
+
+	# Clean URLs: /terms -> terms.html (matches the old apex Caddy behavior).
+	try_files {path} {path}.html /index.html
+	file_server {
+		hide .git
+	}
+}
