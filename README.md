@@ -49,7 +49,7 @@ will show a "Something went wrong" error — that's expected outside the real de
 
 ## Notes
 
-- External links: "I have an invite" / "Enter CoSeeker" → `https://coseeker.com/`; open source → `https://github.com/k4m2a`.
+- External links: "I have an invite" / "Enter CoSeeker" → `https://coseeker.app/`; open source → `https://github.com/k4m2a`.
 - Contact email used across the site: `contact@coseeker.org`.
 - Legal/help copy mirrors the canonical text on coseeker.org (effective 10 June 2026).
 
