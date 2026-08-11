@@ -2,6 +2,30 @@
 
 A static, black-and-white marketing site for CoSeeker. No build step, no dependencies to install — every page is plain HTML that can be served by any static host (Netlify, Vercel, GitHub Pages, S3/CloudFront, Nginx, etc.).
 
+## Deployment
+
+Live at **<https://www.coseeker.org>** as a **Coolify git app** (project `K4M2A`, uuid
+`y74pgda298n48dfgn3twpv7h`). Push to `main` and Coolify rebuilds — no manual step, nothing to
+copy to a server.
+
+```bash
+git push origin main
+```
+
+Despite having no build step, it ships as a **Docker image rather than a static buildpack**:
+[`Dockerfile`](Dockerfile) puts the files behind `caddy:2-alpine` with a
+[`Caddyfile`](Caddyfile) that does `try_files {path} {path}.html`. That is what preserves the
+**extensionless URLs** (`/terms` → `terms.html`) the old apex Caddy used to provide — a plain
+static host would 404 them. The Caddyfile also 404s `/Caddyfile`, `/Dockerfile` and
+`/.dockerignore`, which otherwise ride along in the image and would be served.
+
+The apex `coseeker.org` does not serve this site; it 301s the known site paths to `www`. Adding
+a new page therefore needs its path added to the `@site` matcher in the **PDS** Caddyfile too,
+or the apex URL for it falls through to the PDS and 404s — see the root
+[`README.md`](../README.md) §5.
+
+> Branch protection requires a PR; direct pushes to `main` are rejected.
+
 ## Run locally
 
 Just serve the folder root with any static server, e.g.:
@@ -41,11 +65,15 @@ Fonts (Bricolage Grotesque + DM Sans) load from Google Fonts via `<link>` — no
 
 `request-invite.html` and `contact.html` validate client-side (`site.js`), then POST JSON
 to the endpoint in each form's `data-endpoint` attribute (`/api/contact`, `/api/invite`).
-In production those routes are proxied by Caddy to a self-hosted Node service
-(`forms-server/` at the repo root) that emails the submission out — see the root
-[`README.md`](../README.md) §6a for the backend and §5 for the Caddy routing. When serving
+In production this site and those routes both live on **Coolify** at `www.coseeker.org`, where
+Traefik path-routes `/api/*` to the `forms-server` service, which emails the submission out.
+(The apex `coseeker.org` only 301s these paths to `www`.) See the root
+[`README.md`](../README.md) §6a for the backend and §5 for the apex redirects. When serving
 this folder standalone (e.g. `npx serve .`) those endpoints won't exist, so submissions
 will show a "Something went wrong" error — that's expected outside the real deployment.
+
+> Coolify **strips the `/api` prefix** when path-routing, so forms-server matches either
+> `/api/contact` or `/contact`. Keep both routes.
 
 ## Notes
 
